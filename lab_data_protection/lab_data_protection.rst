@@ -106,7 +106,7 @@ Additional information can be found `here <https://nutanixbible.com/#anchor-book
 
 That's it! You've successfully configured native data protection in Prism.
 
-Takeaways
+总结
 +++++++++
 
 - Nutanix offers data protection solutions for virtual datacenters via different strategies including one-to-one or one-to-many replication.
