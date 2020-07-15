@@ -1,114 +1,114 @@
-.. _lab_data_protection:
+.. 数据保护实验:
 
 ---------------------
-Data Protection Lab
+数据保护实验
 ---------------------
 
-Overview
+概览
 ++++++++
 
-Nutanix provides the ability to perform VM/vDisk-level storage snapshots. Protection Domains (PDs) are the construct for grouping VMs and applying snapshot and replication policies.
+Nutanix提供了VM / vDisk的存储快照的功能。保护域（PD）是用于对VM进行分组以及应用快照和复制策略的结构。
 
-In this exercise you will use Prism to create and restore from VM snapshots, as well as create a Protection Domain for your VMs.
+在本练习中，您将使用Prism对VM实现快照的创建和还原，以及为VM创建保护域。
 
-Data Protection
+数据保护
 +++++++++++++++
 
-VM Snapshots
+虚拟机快照
 ............
 
-#. In **Prism Element > VM > Table**, select your *Initials*-**Linux_VM** VM.
+#. 在 **Prism Element > VM > 列表中**, 选择您的 *Initials*-**Linux_VM** VM.
 
-#. If the VM is powered on, perform a **Guest Shutdown** power action.
+#. 如果虚拟机已启动，请执行 **Guest Shutdown** 电源操作.
 
-#. Select the VM and click **Take Snapshot** from the menu below the table.
+#. 选择虚拟机，然后从表下方的菜单中单击 **Take Snapshot** .
 
-#. Provide a name for your snapshot and click **Submit**.
+#. 为您的快照提供一个名称，然后单击 **Submit**.
 
-#. Select the **VM Snapshots** tab below the table to view the available snapshots for the selected VM.
+#. 选择表下方的 **VM Snapshots** 选项卡以查看所选虚拟机的可用快照.
 
    .. figure:: images/manage_workloads_04.png
 
-#. Under **Actions**, click **Details** to see all of the VM’s properties at the time of the snapshot.
+#. 在 **Actions**, 下，单击 **Details** 以查看快照时虚拟机的所有属性.
 
-   You can see the snapshot contains VM state in addition to just its data.
+   您可以看到快照不仅包含其数据，还包含VM状态.
 
-   *Now it's time to break your VM!*
+   *现在是时候断开您的虚拟机了!*
 
-#. Click **Update** to modify your VM and remove both the CD-ROM and DISK by clicking the **X** icon for each item.
+#. 单击 **Update** 以修改您的VM，并通过单击每个项目的 **X** 图标来删除CD-ROM和磁盘.
 
-#. Click **Save**.
+#. 点击 **Save**.
 
-#. Attempt to power on the VM and launch its console window.
+#. 尝试启动VM并启动其控制台窗口.
 
-   Note that the VM no longer has any disks from which to boot and that the 2048 game is displayed.
+   请注意，VM不再具有要从中引导的任何磁盘，并且显示 2048 游戏.
 
-#. Power off the VM.
+#. 关闭虚拟机电源.
 
-#. Under **VM Snapshots**, select your snapshot and click **Restore** to revert the VM to a functioning state.
+#. 在 **VM Snapshots**, 选择您的快照，然后单击 **Restore** 以将虚拟机恢复为正常运行状态.
 
-   Alternatively you can click **Clone** to restore to a new VM.
+   或者，您可以单击 **Clone** 以还原到新的VM.
 
-#. Verify that the VM boots successfully.
+#. 验证虚拟机是否成功启动.
 
-As previously mentioned, Nutanix snapshots use a `redirect-on-write <https://nutanixbible.com/#anchor-book-of-acropolis-snapshots-and-clones>`_ approach that does not suffer from the performance degradation of chained snapshots found in other hypervisors.
+如前所述，Nutanix快照使用的写重定向<https://nutanixbible.com/#anchor-book-of-acropolis-snapshots-and-clones>`_ 方法不会遭受在其他管理程序中找到的链接快照.
 
-Protection Domains
+保护域
 ..................
 
-#. In **Prism Element > Data Protection > Table**, click **+ Protection Domain > Async DR** to begin creating a PD.
+#. 在 **Prism Element > Data Protection > Table**, 点击 **+ Protection Domain > Async DR** 以开始创建PD.
 
-   .. note::
+   .. 注意::
 
-      Synchronous replication (Metro Availability) is currently support on ESXi. It will be supported in AHV in a future release.
+      当前在ESXi上支持同步复制（Metro可用性）。将来的版本将在AHV中支持它.
 
-#. When opening the Data Protection context of the menu a warning screen will appear. Click on the **OK** button to move forward.
+#. 打开菜单的“数据保护”上下文时，将显示警告屏幕。单击 **OK** 按钮前进.
 
  .. figure:: images/data_protection_01.png
 
-#. Provide a name for the PD, and click **Create**.
+#. 提供PD的名称，然后单击 **Create**.
 
-#. Filter or scroll to select the VMs created during this lab that you want to add to the PD.
+#. 筛选或滚动以选择要在此练习中创建的要添加到PD的VM.
 
-#. Click **Protect Selected Entities** and verify the VMs appear under **Protected Entities**.
+#. 单击 **Protect Selected Entities** 并验证VM是否显示在 **Protected Entities**.
 
-   Consistency groups allow you to group multiple VMs to be snapshot at the same time, e.g. multiple VMs belonging to the same application.
+   一致性组可让您将多个VM分组为同一快照，例如属于同一应用程序的多个VM.
 
-   .. note:: Nutanix snapshots can perform application consistent snapshots for supported operating systems with NGT installed. Each VM using application consistent snapshots will be part of its own consistency group.
+   .. 注意:: Nutanix快照可以为安装了NGT的受支持操作系统执行与应用程序一致的快照。使用应用程序一致性快照的每个VM将成为其自己的一致性组的一部分.
 
-#. Click **Next**.
+#. 点击 **Next**.
 
-#. Click **New Schedule** to define Recovery Point Objective (RPO) and retention.
+#. 点击 **New Schedule** 以定义恢复点目标（RPO）和保留.
 
-#. Configure your desired snapshot frequency (e.g. Repeat every 1 hour)
+#. 配置所需的快照频率（例如，每1小时重复一次）
 
-   .. note::
+   .. 注意::
 
-      AHV supports NearSync snapshots, with RPOs as low as 1 minute.
+      AHV支持NearSync快照，RPO低至1分钟.
 
-   .. note::
+   .. 注意::
 
-      Multiple schedules can be applied to the same PD, allowing you to take and retain X number of hourly, daily, monthly snapshots.
+      可以将多个计划应用于同一PD，从而使您可以获取和保留X个小时的每小时，每天，每月快照.
 
-#. Configure a retention policy (e.g. Keep the last 5 snapshots)
+#. 配置保留策略（例如保留最后5张快照）
 
-   .. note::
+   .. 注意::
 
-      For environments with remote cluster(s) configured, setting up replication is as easy as defining how many snapshots to keep at each remote site.
+      对于配置了远程群集的环境，设置复制就像定义每个远程站点上保留多少快照一样简单.
 
       .. figure:: images/snapshot_02.png
 
-#. Click **Create Schedule**.
+#. 点击 **Create Schedule**.
 
-#. Click **Close** to exit.
+#. 点击 **Close** 退出.
 
-Additional information can be found `here <https://nutanixbible.com/#anchor-book-of-acropolis-backup-and-disaster-recovery>`_.
+可在 `此处 <https://nutanixbible.com/#anchor-book-of-acropolis-backup-and-disaster-recovery>`_找到更多信息.
 
-That's it! You've successfully configured native data protection in Prism.
+您已经在Prism中成功配置了本机数据保护.
 
-总结
+结论
 +++++++++
 
-- Nutanix offers data protection solutions for virtual datacenters via different strategies including one-to-one or one-to-many replication.
-- Nutanix provides data protection functions at the VM, file, and volume group level, so VMs and data remain safe in a crash-consistent environment.
-- VM-level snapshot and replication policies can be managed through Prism for any supported hypervisor.
+- Nutanix通过不同的策略（包括一对一或一对多复制）为虚拟数据中心提供数据保护解决方案.
+- Nutanix在VM，文件和卷组级别提供了数据保护功能，因此VM和数据在崩溃一致的环境中保持安全.
+- 可以通过Prism对任何受支持的管理程序进行VM级快照和复制策略的管理.
